@@ -1,18 +1,29 @@
 import { Component, createResource, createSignal, Suspense } from "solid-js";
 import ImageLoader from "./ImageLoader";
 
-type fetchCatResponse = {
+type fetchAPIResp = {
   id: string;
   url: string;
   width: number;
   height: number;
 };
 
-const fetchCat = async () => {
-  const catResponse: Array<fetchCatResponse> = await (
-    await fetch(`https://api.thecatapi.com/v1/images/search`)
+const fetchRandom = async () => {
+  const API_INDEXES = ["thedogapi", "thecatapi"];
+  const apiResp: Array<fetchAPIResp> = await (
+    await fetch(
+      `https://api.${
+        API_INDEXES[~~(Math.random() * API_INDEXES.length)]
+      }.com/v1/images/search`
+    )
   ).json();
-  return catResponse[0];
+  const cleanedResp = (({ id, url, width, height }) => ({
+    id,
+    url,
+    width,
+    height,
+  }))(apiResp[0]);
+  return cleanedResp;
 };
 
 const Spinner: Component = () => {
@@ -37,16 +48,16 @@ const Spinner: Component = () => {
     </div>
   );
 };
-const CatComponent: Component = () => {
-  const [cat, { mutate, refetch }] = createResource(fetchCat);
+const FetcherComponent: Component = () => {
+  const [fetched, { refetch }] = createResource(fetchRandom);
   return (
     <div class="card w-11/12 md:w-auto md:min-w-fit md:max-w-3/4">
       <div class="card-header mx-4 my-4">
         <a blur-shadow-image="true">
-          {cat.loading ? (
+          {fetched.loading ? (
             <div class="mx-auto max-w-full rounded-lg w-96 h-96 animate-pulse bg-grey-200 shadow-sm" />
           ) : (
-            <ImageLoader {...cat()} />
+            <ImageLoader {...fetched()} />
           )}
         </a>
       </div>
@@ -60,10 +71,10 @@ const CatComponent: Component = () => {
 
         <div
           class={`rounded-lg max-w-full text-sm whitespace-pre overflow-x-scroll overflow-y-hidden ${
-            cat.loading && "animate-pulse text-transparent bg-grey-200"
+            fetched.loading && "animate-pulse text-transparent bg-grey-200"
           }`}
         >
-          <pre>{JSON.stringify(cat(), null, 2)}</pre>
+          <pre>{JSON.stringify(fetched(), null, 2)}</pre>
         </div>
       </div>
       <div class="card-footer">
@@ -73,7 +84,7 @@ const CatComponent: Component = () => {
           onClick={refetch}
         >
           Gimme more
-          {cat.loading && (
+          {fetched.loading && (
             <svg
               class="inline mx-2 w-4 h-4 text-grey-200 align-text-bottom animate-spin dark:text-grey-600"
               viewBox="0 0 100 101"
@@ -96,4 +107,4 @@ const CatComponent: Component = () => {
   );
 };
 
-export default CatComponent;
+export default FetcherComponent;
