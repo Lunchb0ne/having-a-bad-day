@@ -59,7 +59,7 @@ const CatComponent: Component = () => {
         </a>
 
         <div
-          class={`rounded-lg max-w-full text-sm whitespace-pre overflow-x-scroll ${
+          class={`rounded-lg max-w-full text-sm whitespace-pre overflow-x-scroll overflow-y-hidden ${
             cat.loading && "animate-pulse text-transparent bg-grey-200"
           }`}
         >
