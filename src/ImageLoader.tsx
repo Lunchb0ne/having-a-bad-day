@@ -15,7 +15,7 @@ const ImageLoader: Component<ImageLoaderProps> = ({
   });
   return (
     <img
-      class={`mx-auto object-cover rounded-lg h-96 w-96 bg-grey-200 shadow-sm ${
+      class={`mx-auto object-cover rounded-lg w-96 h-96 bg-grey-200 shadow-sm ${
         imageFetched() ? "" : "animate-pulse"
       }`}
       src={url}

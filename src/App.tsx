@@ -5,7 +5,7 @@ import Footer from "./Footer";
 const App: Component = () => {
   return (
     <>
-      <main class="flex h-full justify-center items-center mx-2 md:mx-5">
+      <main class="min-h-[inherit] py-9 my-auto flex justify-center items-start md:items-center mx-2 md:mx-5">
         <CatComponent />
       </main>
       <Footer />

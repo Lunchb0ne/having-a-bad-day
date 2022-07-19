@@ -40,16 +40,14 @@ const Spinner: Component = () => {
 const CatComponent: Component = () => {
   const [cat, { mutate, refetch }] = createResource(fetchCat);
   return (
-    <div class="card w-11/12 md:w-fit md:max-w-3/4">
+    <div class="card w-11/12 md:w-auto md:min-w-fit md:max-w-3/4">
       <div class="card-header mx-4 my-4">
         <a blur-shadow-image="true">
-          <div class="rounded-lg text-center">
-            {cat.loading ? (
-              <div class="mx-auto rounded-lg h-96 w-96 animate-pulse bg-grey-200 shadow-sm" />
-            ) : (
-              <ImageLoader {...cat()} />
-            )}
-          </div>
+          {cat.loading ? (
+            <div class="mx-auto max-w-full rounded-lg w-96 h-96 animate-pulse bg-grey-200 shadow-sm" />
+          ) : (
+            <ImageLoader {...cat()} />
+          )}
         </a>
       </div>
       <div class="card-body ">
@@ -61,7 +59,7 @@ const CatComponent: Component = () => {
         </a>
 
         <div
-          class={`rounded-lg text-sm whitespace-pre overflow-x-scroll ${
+          class={`rounded-lg max-w-full text-sm whitespace-pre overflow-x-scroll ${
             cat.loading && "animate-pulse text-transparent bg-grey-200"
           }`}
         >
@@ -74,9 +72,10 @@ const CatComponent: Component = () => {
           data-ripple-dark="true"
           onClick={refetch}
         >
+          Gimme more
           {cat.loading && (
             <svg
-              class="inline mr-2 w-4 h-4 text-gray-200 align-text-bottom animate-spin dark:text-gray-600"
+              class="inline mx-2 w-4 h-4 text-grey-200 align-text-bottom animate-spin dark:text-grey-600"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +89,7 @@ const CatComponent: Component = () => {
                 fill="#1C64F2"
               />
             </svg>
-          )}{" "}
-          Gimme more
+          )}
         </button>
       </div>
     </div>
